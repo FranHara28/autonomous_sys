@@ -50,12 +50,12 @@ class Bug2(Node):
             self.initial_position = self.current_position
 
     def fl_sensor_callback(self, msg):
-        self.fl_sensor_value = msg.range / 0.65  # Povećana vrijednost senzora
+        self.fl_sensor_value = msg.range / 0.5  # Povećana vrijednost senzora
         if self.fl_sensor_value < 0.0:
             self.fl_sensor_value = 0.0
 
     def fr_sensor_callback(self, msg):
-        self.fr_sensor_value = msg.range / 0.65  # Povećana vrijednost senzora
+        self.fr_sensor_value = msg.range / 0.5  # Povećana vrijednost senzora
         if self.fr_sensor_value < 0.0:
             self.fr_sensor_value = 0.0
 
@@ -101,7 +101,7 @@ class Bug2(Node):
             self.get_logger().info("Moving to goal")
             if not self.direction_found:
                 return
-            if self.fl_sensor_value < 0.65 or self.fr_sensor_value < 0.65:
+            if self.fl_sensor_value < 0.5 or self.fr_sensor_value < 0.5:
                 self.hit_point = (self.current_x, self.current_y)
                 self.state = 'follow_boundary'
                 self.cmd_vel_msg.linear.x = 0.0
@@ -117,7 +117,7 @@ class Bug2(Node):
 
         elif self.state == 'follow_boundary':
             self.get_logger().info("Following boundary")
-            if self.fl_sensor_value > 0.65 and self.fr_sensor_value > 0.65:
+            if self.fl_sensor_value > 0.5 and self.fr_sensor_value > 0.5:
                 self.get_logger().info("No obstacle found, moving to goal")
                 self.state = 'move_to_goal'
                 self.leave_point = (self.current_x, self.current_y)
